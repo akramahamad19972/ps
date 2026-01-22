@@ -4,28 +4,24 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Products — PrimeSoft</title>
+  <meta name="description" content="Browse PrimeSoft subscription products and add to cart for WhatsApp checkout." />
   <link rel="stylesheet" href="styles.css" />
   <style>
-    .product-card{display:flex;gap:14px;align-items:flex-start}
-    .product-logo{
-      width:56px;height:56px;border-radius:16px;
+    .productCard { display:flex; flex-direction:column; gap:12px; }
+    .productTop { display:flex; align-items:flex-start; justify-content:space-between; gap:12px; }
+    .logoBox{
+      width:56px;height:56px;border-radius:18px;
       display:flex;align-items:center;justify-content:center;
-      font-weight:900;
-      border:1px solid var(--line);
-      background: linear-gradient(135deg, rgba(124,58,237,.25), rgba(6,182,212,.18));
+      font-weight:1000;border:1px solid var(--line);
+      background: linear-gradient(135deg, rgba(30,64,175,.22), rgba(14,165,233,.14));
       flex:0 0 auto;
+      font-size:16px;
     }
-    .priceRow{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:10px}
-    .priceTag{font-weight:900;font-size:18px}
-    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
-    .cartBadge{display:inline-flex;align-items:center;gap:8px}
-    .bubble{
-      min-width:22px;height:22px;border-radius:999px;
-      display:inline-flex;align-items:center;justify-content:center;
-      background: linear-gradient(135deg, var(--accent1), var(--accent3));
-      color:#fff;font-size:12px;font-weight:900;
-      padding:0 6px;
-    }
+    .priceLine { font-size:22px; font-weight:1000; letter-spacing:-0.02em; }
+    .muted { color: var(--muted); font-weight:700; }
+    .actions { display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+    .qty { width: 90px; }
+    .mini { font-size:12px; color: var(--muted); margin-top:2px; }
   </style>
 </head>
 <body>
@@ -35,16 +31,11 @@
     <a class="brand" href="index.html"><span class="logo"></span><span>PrimeSoft</span></a>
     <nav class="nav-links">
       <a href="products.html">Products</a>
-      <a href="pricing.html">Pricing</a>
       <a href="how-it-works.html">How it Works</a>
       <a href="faq.html">FAQ</a>
       <a class="btn ghost" href="contact.html">Support</a>
-
-      <a class="btn cartBadge" href="cart.html">
-        🛒 Cart <span class="bubble" data-cart-count>0</span>
-      </a>
-
-      <button class="btn" onclick="toggleTheme()" type="button">🌓</button>
+      <a class="btn" href="cart.html">Cart (<span data-cart-count>0</span>)</a>
+      <button class="btn" onclick="toggleTheme()" type="button" aria-label="Toggle theme">🌓</button>
     </nav>
   </div>
 </header>
@@ -52,10 +43,25 @@
 <main class="container">
   <section class="section">
     <div class="kicker">Products</div>
-    <h1 class="h1">Choose your subscriptions</h1>
-    <p class="p-lg">Add items to cart, then checkout via WhatsApp with full order details.</p>
+    <h1 class="h1">Browse subscriptions</h1>
+    <p class="p-lg">Choose a product, select quantity, and add to cart. Checkout happens via WhatsApp.</p>
 
-    <div class="grid" id="productsGrid" style="grid-template-columns:repeat(3,1fr);margin-top:18px"></div>
+    <div class="notice" style="margin-top:14px">
+      ✅ Tip: After adding items, open <strong>Cart</strong> to checkout.
+    </div>
+
+    <div id="productGrid" class="grid" style="grid-template-columns:repeat(3,1fr);margin-top:18px"></div>
+
+    <div class="section" style="padding-top:18px">
+      <div class="card">
+        <h2 class="h2">Need help choosing?</h2>
+        <p class="p">Contact support and include the product name + your activation email.</p>
+        <div class="section-sm row" style="justify-content:flex-start">
+          <a class="btn primary" href="contact.html">Contact Support</a>
+          <a class="btn" href="faq.html">Read FAQ</a>
+        </div>
+      </div>
+    </div>
   </section>
 </main>
 
@@ -67,11 +73,12 @@
     </div>
     <div class="grid" style="grid-template-columns:repeat(2,1fr);gap:12px">
       <div class="grid">
-        <a href="pricing.html">Pricing</a>
+        <a href="products.html">Products</a>
         <a href="how-it-works.html">How it Works</a>
         <a href="faq.html">FAQ</a>
       </div>
       <div class="grid">
+        <a href="contact.html">Support</a>
         <a href="cart.html">Cart</a>
         <a href="index.html">Home</a>
       </div>
@@ -83,41 +90,76 @@
 <script>
   document.getElementById("y").textContent = new Date().getFullYear();
 
-  const grid = document.getElementById("productsGrid");
-  const products = getAllProducts();
+  const grid = document.getElementById("productGrid");
 
-  const detailPage = (id) => {
-    if (id === "netflix") return "product-netflix.html";
-    if (id === "linkedin") return "product-linkedin.html";
-    if (id === "ai") return "product-ai.html";
-    return "products.html";
-  };
+  function safeText(v){ return String(v ?? ""); }
 
-  grid.innerHTML = products.map(p => `
-    <div class="card hover">
-      <div class="product-card">
-        <div class="product-logo">${p.logoText}</div>
-        <div>
-          <div class="row" style="align-items:flex-start">
-            <strong style="font-size:18px">${p.name}</strong>
-            <span class="tag">Subscription</span>
+  function renderProducts() {
+    const products = (window.getAllProducts ? window.getAllProducts() : []) || [];
+    if (!products.length) {
+      grid.innerHTML = `
+        <div class="card" style="grid-column:1/-1">
+          <h2 class="h2">No products found</h2>
+          <p class="p">Check your <code>PRODUCTS</code> array in <code>app.js</code>.</p>
+        </div>
+      `;
+      return;
+    }
+
+    grid.innerHTML = products.map(p => {
+      const price = window.formatLKR ? window.formatLKR(p.priceLkr) : p.priceLkr;
+      return `
+        <div class="card productCard hover">
+          <div class="productTop">
+            <div style="display:flex; gap:12px; align-items:flex-start">
+              <div class="logoBox">${safeText(p.logoText)}</div>
+              <div>
+                <div class="row" style="justify-content:flex-start;gap:10px;flex-wrap:wrap">
+                  <strong style="font-size:16px">${safeText(p.name)}</strong>
+                </div>
+                <div class="muted">${safeText(p.tagline)}</div>
+                <div class="mini">Delivered/activated after confirmation.</div>
+              </div>
+            </div>
           </div>
-          <p class="p">${p.tagline}</p>
 
-          <div class="priceRow">
-            <div class="priceTag">${formatLKR(p.priceLkr)}</div>
-            <span class="small">per month</span>
+          <div class="row" style="align-items:flex-end">
+            <div>
+              <div class="small">Price</div>
+              <div class="priceLine">${price}<span class="small"> / month</span></div>
+            </div>
           </div>
 
           <div class="actions">
-            <a class="btn" href="${detailPage(p.id)}">Details</a>
-            <button class="btn primary" type="button" onclick="cart.addToCart('${p.id}', 1)">Add to Cart</button>
+            <input id="qty-${safeText(p.id)}" class="input qty" type="number" min="1" value="1" />
+            <button class="btn primary" type="button" onclick="addItem('${safeText(p.id)}')">Add to cart</button>
+            <a class="btn" href="cart.html">View cart</a>
           </div>
         </div>
-      </div>
-    </div>
-  `).join("");
+      `;
+    }).join("");
 
+    // Responsive fallback if your CSS doesn't handle it
+    const mq = window.matchMedia("(max-width: 900px)");
+    function setCols() {
+      grid.style.gridTemplateColumns = mq.matches ? "1fr" : "repeat(3,1fr)";
+    }
+    mq.addEventListener?.("change", setCols);
+    setCols();
+  }
+
+  function addItem(productId) {
+    const qtyEl = document.getElementById("qty-" + productId);
+    const qty = Math.max(1, Number(qtyEl?.value || 1));
+    if (window.cart?.addToCart) {
+      window.cart.addToCart(productId, qty);
+      alert("Added to cart ✅");
+    } else {
+      alert("Cart system not found. Make sure app.js is loaded.");
+    }
+  }
+
+  renderProducts();
 </script>
 </body>
 </html>
