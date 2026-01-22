@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Support — PrimeSoft</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<header class="nav">
+  <div class="container nav-inner">
+    <a class="brand" href="index.html"><span class="logo"></span><span>PrimeSoft</span></a>
+    <nav class="nav-links">
+      <a href="products.html">Products</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="how-it-works.html">How it Works</a>
+      <a href="faq.html">FAQ</a>
+      <a class="btn ghost" href="contact.html">Support</a>
+      <a class="btn primary" href="pricing.html">Get Started</a>
+      <button class="btn" onclick="toggleTheme()" type="button">🌓</button>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <section class="section">
+    <div class="kicker">Contact / Support</div>
+    <h1 class="h1">We’re here to help</h1>
+    <p class="p-lg">Use this form template. For a real form on GitHub Pages, connect it to Formspree or Google Forms.</p>
+
+    <div class="grid" style="grid-template-columns:1fr 1fr;gap:18px;margin-top:18px">
+      <div class="card">
+        <h2 class="h2">Support form (UI)</h2>
+        <form class="form" onsubmit="alert('This is a demo form. Connect Formspree/Google Forms to receive messages.'); return false;">
+          <input class="input" placeholder="Your name" required />
+          <input class="input" placeholder="Email address" type="email" required />
+          <select class="select" required>
+            <option value="" selected disabled>Select product</option>
+            <option>Netflix</option>
+            <option>LinkedIn Premium</option>
+            <option>AI Tools</option>
+          </select>
+          <textarea class="textarea" placeholder="Describe your issue (include order details)..." required></textarea>
+          <button class="btn primary" type="submit">Send message</button>
+          <div class="help">Tip: include product, billing (monthly/yearly), and your email used at checkout.</div>
+        </form>
+      </div>
+
+      <div class="card">
+        <h2 class="h2">Fast options</h2>
+        <div class="grid">
+          <div class="card" style="box-shadow:none">
+            <strong>Email</strong>
+            <p class="p">support@yourdomain.com (replace this)</p>
+          </div>
+          <div class="card" style="box-shadow:none">
+            <strong>WhatsApp</strong>
+            <p class="p">+00 000 000000 (replace this)</p>
+          </div>
+          <div class="card" style="box-shadow:none">
+            <strong>Response time</strong>
+            <p class="p">Typically within 1–12 hours, depending on volume.</p>
+          </div>
+        </div>
+
+        <div class="notice" style="margin-top:14px">
+          <strong>Recommended:</strong> Add a visible refund policy link to reduce chargebacks.
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container grid footer-grid">
+    <div>
+      <div class="row" style="justify-content:flex-start;gap:10px"><span class="logo"></span><strong>PrimeSoft</strong></div>
+      <p class="help" style="margin-top:10px">© <span id="y"></span> PrimeSoft.</p>
+    </div>
+    <div class="grid" style="grid-template-columns:repeat(2,1fr);gap:12px">
+      <div class="grid">
+        <a href="products.html">Products</a>
+        <a href="pricing.html">Pricing</a>
+        <a href="faq.html">FAQ</a>
+      </div>
+      <div class="grid">
+        <a href="how-it-works.html">How it Works</a>
+        <a href="index.html">Home</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+<script>document.getElementById("y").textContent=new Date().getFullYear();</script>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>How It Works — PrimeSoft</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<header class="nav">
+  <div class="container nav-inner">
+    <a class="brand" href="index.html"><span class="logo"></span><span>PrimeSoft</span></a>
+    <nav class="nav-links">
+      <a href="products.html">Products</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="how-it-works.html">How it Works</a>
+      <a href="faq.html">FAQ</a>
+      <a class="btn ghost" href="contact.html">Support</a>
+      <a class="btn primary" href="pricing.html">Get Started</a>
+      <button class="btn" onclick="toggleTheme()" type="button">🌓</button>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <section class="section">
+    <div class="kicker">How it works</div>
+    <h1 class="h1">From purchase to activation in a few steps</h1>
+    <p class="p-lg">Set expectations clearly. This improves trust and reduces refunds.</p>
+
+    <div class="grid" style="grid-template-columns:repeat(3,1fr);margin-top:18px">
+      <div class="card">
+        <div class="kicker">Step 1</div>
+        <h2 class="h2">Choose a plan</h2>
+        <p class="p">Pick monthly or yearly billing and select your subscription product.</p>
+      </div>
+      <div class="card">
+        <div class="kicker">Step 2</div>
+        <h2 class="h2">Checkout</h2>
+        <p class="p">Complete secure payment. Provide accurate email/contact details for delivery.</p>
+      </div>
+      <div class="card">
+        <div class="kicker">Step 3</div>
+        <h2 class="h2">Activation</h2>
+        <p class="p">Receive activation steps. If you need help, support is available 24/7.</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="card">
+        <h2 class="h2">Trust & delivery promises</h2>
+        <ul class="ul">
+          <li class="li">Clear delivery time windows shown before checkout</li>
+          <li class="li">Support-first approach to resolve access issues</li>
+          <li class="li">Refund policy and eligibility explained up front</li>
+        </ul>
+        <div class="section-sm row">
+          <a class="btn primary" href="pricing.html">Get Started</a>
+          <a class="btn" href="contact.html">Contact Support</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container grid footer-grid">
+    <div>
+      <div class="row" style="justify-content:flex-start;gap:10px"><span class="logo"></span><strong>PrimeSoft</strong></div>
+      <p class="help" style="margin-top:10px">© <span id="y"></span> PrimeSoft.</p>
+    </div>
+    <div class="grid" style="grid-template-columns:repeat(2,1fr);gap:12px">
+      <div class="grid">
+        <a href="products.html">Products</a>
+        <a href="pricing.html">Pricing</a>
+        <a href="faq.html">FAQ</a>
+      </div>
+      <div class="grid">
+        <a href="contact.html">Support</a>
+        <a href="index.html">Home</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+<script>document.getElementById("y").textContent=new Date().getFullYear();</script>
+</body>
+</html>

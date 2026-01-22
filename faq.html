@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>FAQ — PrimeSoft</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<header class="nav">
+  <div class="container nav-inner">
+    <a class="brand" href="index.html"><span class="logo"></span><span>PrimeSoft</span></a>
+    <nav class="nav-links">
+      <a href="products.html">Products</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="how-it-works.html">How it Works</a>
+      <a href="faq.html">FAQ</a>
+      <a class="btn ghost" href="contact.html">Support</a>
+      <a class="btn primary" href="pricing.html">Get Started</a>
+      <button class="btn" onclick="toggleTheme()" type="button">🌓</button>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <section class="section">
+    <div class="kicker">FAQ</div>
+    <h1 class="h1">Answers to common questions</h1>
+    <p class="p-lg">Clear policies reduce disputes. Keep language transparent and consistent with how you deliver access.</p>
+
+    <div class="grid" style="grid-template-columns:1fr;gap:14px;margin-top:18px">
+      <div class="card">
+        <h2 class="h2">How do I receive access after purchase?</h2>
+        <p class="p">After checkout, you’ll receive instructions via email or your chosen contact method. Delivery time depends on the plan and product.</p>
+      </div>
+
+      <div class="card">
+        <h2 class="h2">Is checkout secure?</h2>
+        <p class="p">Yes. Payments are processed by secure providers (e.g., Stripe/PayPal). We do not store your card details on this website.</p>
+      </div>
+
+      <div class="card">
+        <h2 class="h2">Refunds & support</h2>
+        <p class="p">If activation fails and support cannot resolve it within a reasonable time, refunds may be offered according to our policy. Contact support with your order details.</p>
+      </div>
+
+      <div class="card">
+        <h2 class="h2">Legality / terms</h2>
+        <p class="p">We encourage users to review the service’s terms and use subscriptions responsibly. Our site provides access according to stated delivery methods and support policies.</p>
+      </div>
+
+      <div class="card">
+        <h2 class="h2">Need help?</h2>
+        <p class="p">Use the support page and include: product name, billing type, and your contact email.</p>
+        <div class="section-sm">
+          <a class="btn primary" href="contact.html">Contact Support</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="notice" style="margin-top:16px">
+      <strong>Recommended:</strong> Add dedicated “Terms”, “Privacy”, and “Refund Policy” pages later for maximum trust.
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container grid footer-grid">
+    <div>
+      <div class="row" style="justify-content:flex-start;gap:10px"><span class="logo"></span><strong>PrimeSoft</strong></div>
+      <p class="help" style="margin-top:10px">© <span id="y"></span> PrimeSoft.</p>
+    </div>
+    <div class="grid" style="grid-template-columns:repeat(2,1fr);gap:12px">
+      <div class="grid">
+        <a href="products.html">Products</a>
+        <a href="pricing.html">Pricing</a>
+        <a href="how-it-works.html">How it Works</a>
+      </div>
+      <div class="grid">
+        <a href="contact.html">Support</a>
+        <a href="index.html">Home</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+<script>document.getElementById("y").textContent=new Date().getFullYear();</script>
+</body>
+</html>

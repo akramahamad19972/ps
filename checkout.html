@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Checkout — PrimeSoft</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<header class="nav">
+  <div class="container nav-inner">
+    <a class="brand" href="index.html"><span class="logo"></span><span>PrimeSoft</span></a>
+    <nav class="nav-links">
+      <a href="products.html">Products</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="how-it-works.html">How it Works</a>
+      <a href="faq.html">FAQ</a>
+      <a class="btn ghost" href="contact.html">Support</a>
+      <button class="btn" onclick="toggleTheme()" type="button">🌓</button>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <section class="section">
+    <div class="kicker">Checkout</div>
+    <h1 class="h1">Complete your order</h1>
+    <p class="p-lg">This is a clean checkout UI template. Replace the final button with your Stripe/PayPal checkout link.</p>
+
+    <div class="grid" style="grid-template-columns:1fr .9fr;gap:18px;margin-top:18px">
+      <div class="card">
+        <h2 class="h2">Customer details</h2>
+        <form class="form" onsubmit="alert('Demo checkout. Replace with Stripe/PayPal link for real payments.'); return false;">
+          <input class="input" placeholder="Full name" required />
+          <input class="input" placeholder="Email for activation" type="email" required />
+          <input class="input" placeholder="WhatsApp / Phone (optional)" />
+          <textarea class="textarea" placeholder="Notes (optional): preferred delivery method, etc."></textarea>
+          <button class="btn primary" type="submit">Place order (demo)</button>
+          <div class="help">For real checkout, connect Stripe Payment Links or PayPal subscriptions and link here.</div>
+        </form>
+      </div>
+
+      <div class="card">
+        <h2 class="h2">Order summary</h2>
+        <div class="notice" id="summary">Loading selection…</div>
+
+        <div class="section-sm">
+          <div class="badge">🔒 Secure payment</div>
+          <div class="badge">⚡ Fast delivery</div>
+          <div class="badge">💬 24/7 support</div>
+        </div>
+
+        <div class="card" style="box-shadow:none">
+          <strong>Next steps</strong>
+          <ul class="ul">
+            <li class="li">After payment, you’ll receive activation instructions</li>
+            <li class="li">If you need help, contact support with your email</li>
+            <li class="li">Refunds follow the policy in the FAQ/support pages</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container grid footer-grid">
+    <div>
+      <div class="row" style="justify-content:flex-start;gap:10px"><span class="logo"></span><strong>PrimeSoft</strong></div>
+      <p class="help" style="margin-top:10px">© <span id="y"></span> PrimeSoft.</p>
+    </div>
+    <div class="grid" style="grid-template-columns:repeat(2,1fr);gap:12px">
+      <div class="grid">
+        <a href="pricing.html">Pricing</a>
+        <a href="products.html">Products</a>
+        <a href="faq.html">FAQ</a>
+      </div>
+      <div class="grid">
+        <a href="contact.html">Support</a>
+        <a href="index.html">Home</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+<script>
+  document.getElementById("y").textContent=new Date().getFullYear();
+  const params = new URLSearchParams(location.search);
+  const plan = params.get("plan");
+  const product = params.get("product");
+  const bill = params.get("bill") || "monthly";
+
+  const label = plan ? `Plan: ${plan}` : (product ? `Product: ${product}` : "Selection: not specified");
+  document.getElementById("summary").innerHTML =
+    `<strong>${label}</strong><br/>Billing: <strong>${bill}</strong><br/><span class="help">Tip: You can pass ?plan=plus&bill=monthly or ?product=netflix&bill=yearly</span>`;
+</script>
+</body>
+</html>

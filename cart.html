@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Cart — PrimeSoft</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .cartItem{display:flex;gap:12px;align-items:flex-start;justify-content:space-between}
+    .left{display:flex;gap:12px;align-items:flex-start}
+    .logoBox{
+      width:52px;height:52px;border-radius:16px;
+      display:flex;align-items:center;justify-content:center;
+      font-weight:900;border:1px solid var(--line);
+      background: linear-gradient(135deg, rgba(124,58,237,.25), rgba(6,182,212,.18));
+      flex:0 0 auto;
+    }
+    .qty{width:74px}
+    .line{color:var(--muted);font-weight:700}
+    .totalBig{font-size:26px;font-weight:900}
+  </style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="container nav-inner">
+    <a class="brand" href="index.html"><span class="logo"></span><span>PrimeSoft</span></a>
+    <nav class="nav-links">
+      <a href="products.html">Products</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="faq.html">FAQ</a>
+      <a class="btn ghost" href="contact.html">Support</a>
+      <button class="btn" onclick="toggleTheme()" type="button">🌓</button>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <section class="section">
+    <div class="kicker">Cart</div>
+    <h1 class="h1">Your cart</h1>
+    <p class="p-lg">Review items and checkout. You’ll be redirected to WhatsApp with your order details.</p>
+
+    <div class="grid" style="grid-template-columns:1fr .85fr;gap:18px;margin-top:18px">
+      <div class="card">
+        <h2 class="h2">Items</h2>
+        <div id="cartItems" class="grid" style="gap:12px"></div>
+        <div class="notice" id="emptyNotice" style="display:none;margin-top:12px">
+          Your cart is empty. Go to <a href="products.html"><strong>Products</strong></a>.
+        </div>
+      </div>
+
+      <div class="card">
+        <h2 class="h2">Checkout</h2>
+
+        <div class="grid" style="gap:12px">
+          <input id="name" class="input" placeholder="Your name" />
+          <input id="email" class="input" placeholder="Email for activation" type="email" />
+          <div class="notice">
+            ✅ Secure order summary will be sent to your WhatsApp for confirmation and activation steps.
+          </div>
+        </div>
+
+        <div class="section-sm row">
+          <div>
+            <div class="small">Total</div>
+            <div id="total" class="totalBig">LKR 0</div>
+          </div>
+        </div>
+
+        <div class="section-sm">
+          <button class="btn primary" type="button" onclick="doCheckout()">Checkout on WhatsApp</button>
+          <button class="btn" type="button" onclick="cart.clearCart(); renderCart();">Clear cart</button>
+        </div>
+
+        <div class="help">
+          Tip: Add your WhatsApp number in <code>app.js</code> (WHATSAPP_NUMBER).
+        </div>
+      </div>
+    </div>
+
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container grid footer-grid">
+    <div>
+      <div class="row" style="justify-content:flex-start;gap:10px"><span class="logo"></span><strong>PrimeSoft</strong></div>
+      <p class="help" style="margin-top:10px">© <span id="y"></span> PrimeSoft.</p>
+    </div>
+    <div class="grid" style="grid-template-columns:repeat(2,1fr);gap:12px">
+      <div class="grid">
+        <a href="products.html">Products</a>
+        <a href="pricing.html">Pricing</a>
+        <a href="faq.html">FAQ</a>
+      </div>
+      <div class="grid">
+        <a href="contact.html">Support</a>
+        <a href="index.html">Home</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+<script>
+  document.getElementById("y").textContent = new Date().getFullYear();
+
+  const itemsEl = document.getElementById("cartItems");
+  const totalEl = document.getElementById("total");
+  const emptyNotice = document.getElementById("emptyNotice");
+
+  function renderCart() {
+    const { items, total } = cart.cartSummary();
+
+    totalEl.textContent = formatLKR(total);
+
+    if (!items.length) {
+      itemsEl.innerHTML = "";
+      emptyNotice.style.display = "block";
+      return;
+    }
+
+    emptyNotice.style.display = "none";
+
+    itemsEl.innerHTML = items.map(x => `
+      <div class="card" style="box-shadow:none">
+        <div class="cartItem">
+          <div class="left">
+            <div class="logoBox">${x.product.logoText}</div>
+            <div>
+              <strong>${x.product.name}</strong>
+              <div class="line">${x.product.tagline}</div>
+              <div class="line">Price: ${formatLKR(x.product.priceLkr)} / month</div>
+            </div>
+          </div>
+
+          <div style="text-align:right">
+            <div class="line">Line: <strong>${formatLKR(x.lineTotal)}</strong></div>
+            <div style="margin-top:8px;display:flex;gap:8px;justify-content:flex-end;align-items:center">
+              <input class="input qty" type="number" min="1" value="${x.qty}"
+                onchange="cart.setQty('${x.product.id}', this.value); renderCart();" />
+              <button class="btn" type="button" onclick="cart.removeFromCart('${x.product.id}'); renderCart();">Remove</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    `).join("");
+  }
+
+  function doCheckout() {
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    checkoutToWhatsApp({ name, email });
+  }
+
+  renderCart();
+</script>
+</body>
+</html>

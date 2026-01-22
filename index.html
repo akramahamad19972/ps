@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>PrimeSoft Subscriptions — Affordable Digital Plans</title>
+  <meta name="description" content="Modern subscription-based ecommerce for streaming, professional tools, and AI services. Clear pricing, trust signals, and simple checkout." />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<header class="nav">
+  <div class="container nav-inner">
+    <a class="brand" href="index.html">
+      <span class="logo"></span>
+      <span>PrimeSoft</span>
+    </a>
+
+    <nav class="nav-links">
+      <a href="products.html">Products</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="how-it-works.html">How it Works</a>
+      <a href="faq.html">FAQ</a>
+      <a class="btn ghost" href="contact.html">Support</a>
+      <a class="btn primary" href="pricing.html">Get Started</a>
+      <button class="btn" onclick="toggleTheme()" type="button" aria-label="Toggle theme">🌓</button>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <section class="hero">
+    <div class="badge">⚡ Instant activation • 🔒 Secure payment • 💬 24/7 Support</div>
+    <div class="hero-grid section">
+      <div class="card">
+        <div class="kicker">Digital subscriptions / SaaS resale</div>
+        <h1 class="h1">Premium subscriptions, <br/>simple pricing, fast delivery.</h1>
+        <p class="p-lg">Sell and manage digital service plans (streaming, professional tools, AI services) with a clean storefront built for conversion.</p>
+
+        <div class="section-sm row">
+          <a class="btn primary" href="pricing.html">View Plans</a>
+          <a class="btn" href="products.html">Browse Products</a>
+        </div>
+
+        <div class="trust">
+          <div class="item">✅ Secure payments</div>
+          <div class="item">✅ Instant delivery</div>
+          <div class="item">✅ Refund policy</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="kicker">Featured</div>
+        <h2 class="h2">Top picks this week</h2>
+        <div class="grid">
+          <a class="card hover" href="product-netflix.html">
+            <div class="row">
+              <strong>Netflix</strong>
+              <span class="tag">Popular</span>
+            </div>
+            <p class="p">HD / UHD subscription options with fast activation.</p>
+          </a>
+
+          <a class="card hover" href="product-linkedin.html">
+            <div class="row">
+              <strong>LinkedIn Premium</strong>
+              <span class="tag">Pro</span>
+            </div>
+            <p class="p">Boost networking and job search with premium tools.</p>
+          </a>
+
+          <a class="card hover" href="product-ai.html">
+            <div class="row">
+              <strong>AI Tools</strong>
+              <span class="tag">New</span>
+            </div>
+            <p class="p">AI subscriptions for productivity, content, and research.</p>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="row">
+      <div>
+        <div class="kicker">Why PrimeSoft</div>
+        <h2 class="h2">Built to convert visitors into subscribers</h2>
+        <p class="p">High-trust UI, mobile-first layout, and clear CTAs across every page.</p>
+      </div>
+      <a class="btn" href="how-it-works.html">See how it works →</a>
+    </div>
+
+    <div class="grid" style="grid-template-columns:repeat(3,1fr);margin-top:18px">
+      <div class="card">
+        <div class="feature">
+          <div class="icon">⚡</div>
+          <div>
+            <strong>Instant activation</strong>
+            <p class="p">Get access fast with clear steps and delivery expectations.</p>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="feature">
+          <div class="icon">🔒</div>
+          <div>
+            <strong>Secure checkout</strong>
+            <p class="p">Simple checkout UI that keeps buyers focused.</p>
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="feature">
+          <div class="icon">💬</div>
+          <div>
+            <strong>Support-first</strong>
+            <p class="p">Clear support channel + refund policy reduces chargebacks.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="notice" style="margin-top:16px">
+      <strong>Note:</strong> Replace the “Checkout” links with your Stripe/PayPal subscription links when ready.
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="row">
+      <div>
+        <div class="kicker">Quick pricing</div>
+        <h2 class="h2">Choose a plan</h2>
+        <p class="p">Monthly or yearly billing. Highlight your most popular plan.</p>
+      </div>
+
+      <div class="pricing-toggle">
+        <div class="pill active" data-pill="monthly" onclick="setPricingMode('monthly')">Monthly</div>
+        <div class="pill" data-pill="yearly" onclick="setPricingMode('yearly')">Yearly</div>
+      </div>
+    </div>
+
+    <div class="grid pricing-grid" style="margin-top:18px">
+      <div class="card hover">
+        <div class="row">
+          <strong>Starter</strong>
+          <span class="small">Best for individuals</span>
+        </div>
+        <div class="price"><span data-price data-monthly="9" data-yearly="79">$9</span> <span class="small" data-price-suffix>/month</span></div>
+        <ul class="ul">
+          <li class="li">1 active subscription</li>
+          <li class="li">Email support</li>
+          <li class="li">Standard activation</li>
+        </ul>
+        <div class="section-sm">
+          <a class="btn primary" data-checkout-link data-checkout-monthly="checkout.html?plan=starter&bill=monthly" data-checkout-yearly="checkout.html?plan=starter&bill=yearly" href="checkout.html">Get Starter</a>
+        </div>
+      </div>
+
+      <div class="card hover" style="border-color:rgba(34,197,94,.25)">
+        <div class="row">
+          <strong>Plus</strong>
+          <span class="tag">Most Popular</span>
+        </div>
+        <div class="price"><span data-price data-monthly="19" data-yearly="169">$19</span> <span class="small" data-price-suffix>/month</span></div>
+        <ul class="ul">
+          <li class="li">Up to 3 subscriptions</li>
+          <li class="li">Priority support</li>
+          <li class="li">Faster activation</li>
+        </ul>
+        <div class="section-sm">
+          <a class="btn primary" data-checkout-link data-checkout-monthly="checkout.html?plan=plus&bill=monthly" data-checkout-yearly="checkout.html?plan=plus&bill=yearly" href="checkout.html">Get Plus</a>
+        </div>
+      </div>
+
+      <div class="card hover">
+        <div class="row">
+          <strong>Business</strong>
+          <span class="small">Teams & agencies</span>
+        </div>
+        <div class="price"><span data-price data-monthly="49" data-yearly="429">$49</span> <span class="small" data-price-suffix>/month</span></div>
+        <ul class="ul">
+          <li class="li">Up to 10 subscriptions</li>
+          <li class="li">Dedicated support</li>
+          <li class="li">Team-friendly delivery</li>
+        </ul>
+        <div class="section-sm">
+          <a class="btn primary" data-checkout-link data-checkout-monthly="checkout.html?plan=business&bill=monthly" data-checkout-yearly="checkout.html?plan=business&bill=yearly" href="checkout.html">Contact Sales</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container grid footer-grid">
+    <div>
+      <div class="row" style="justify-content:flex-start;gap:10px">
+        <span class="logo"></span><strong>PrimeSoft</strong>
+      </div>
+      <p class="p" style="margin-top:10px">Affordable digital subscriptions with clear plans, trust signals, and support-first delivery.</p>
+      <p class="help" style="margin-top:10px">© <span id="y"></span> PrimeSoft. All rights reserved.</p>
+    </div>
+    <div class="grid" style="grid-template-columns:repeat(2,1fr);gap:12px">
+      <div class="grid">
+        <a href="products.html">Products</a>
+        <a href="pricing.html">Pricing</a>
+        <a href="how-it-works.html">How it Works</a>
+      </div>
+      <div class="grid">
+        <a href="faq.html">FAQ</a>
+        <a href="contact.html">Support</a>
+        <a href="checkout.html">Checkout (UI)</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+<script>document.getElementById("y").textContent=new Date().getFullYear();</script>
+</body>
+</html>
+

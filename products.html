@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Products — PrimeSoft</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .product-card{display:flex;gap:14px;align-items:flex-start}
+    .product-logo{
+      width:56px;height:56px;border-radius:16px;
+      display:flex;align-items:center;justify-content:center;
+      font-weight:900;
+      border:1px solid var(--line);
+      background: linear-gradient(135deg, rgba(124,58,237,.25), rgba(6,182,212,.18));
+      flex:0 0 auto;
+    }
+    .priceRow{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:10px}
+    .priceTag{font-weight:900;font-size:18px}
+    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+    .cartBadge{display:inline-flex;align-items:center;gap:8px}
+    .bubble{
+      min-width:22px;height:22px;border-radius:999px;
+      display:inline-flex;align-items:center;justify-content:center;
+      background: linear-gradient(135deg, var(--accent1), var(--accent3));
+      color:#fff;font-size:12px;font-weight:900;
+      padding:0 6px;
+    }
+  </style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="container nav-inner">
+    <a class="brand" href="index.html"><span class="logo"></span><span>PrimeSoft</span></a>
+    <nav class="nav-links">
+      <a href="products.html">Products</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="how-it-works.html">How it Works</a>
+      <a href="faq.html">FAQ</a>
+      <a class="btn ghost" href="contact.html">Support</a>
+
+      <a class="btn cartBadge" href="cart.html">
+        🛒 Cart <span class="bubble" data-cart-count>0</span>
+      </a>
+
+      <button class="btn" onclick="toggleTheme()" type="button">🌓</button>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <section class="section">
+    <div class="kicker">Products</div>
+    <h1 class="h1">Choose your subscriptions</h1>
+    <p class="p-lg">Add items to cart, then checkout via WhatsApp with full order details.</p>
+
+    <div class="grid" id="productsGrid" style="grid-template-columns:repeat(3,1fr);margin-top:18px"></div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container grid footer-grid">
+    <div>
+      <div class="row" style="justify-content:flex-start;gap:10px"><span class="logo"></span><strong>PrimeSoft</strong></div>
+      <p class="help" style="margin-top:10px">© <span id="y"></span> PrimeSoft.</p>
+    </div>
+    <div class="grid" style="grid-template-columns:repeat(2,1fr);gap:12px">
+      <div class="grid">
+        <a href="pricing.html">Pricing</a>
+        <a href="how-it-works.html">How it Works</a>
+        <a href="faq.html">FAQ</a>
+      </div>
+      <div class="grid">
+        <a href="cart.html">Cart</a>
+        <a href="index.html">Home</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+<script>
+  document.getElementById("y").textContent = new Date().getFullYear();
+
+  const grid = document.getElementById("productsGrid");
+  const products = getAllProducts();
+
+  const detailPage = (id) => {
+    if (id === "netflix") return "product-netflix.html";
+    if (id === "linkedin") return "product-linkedin.html";
+    if (id === "ai") return "product-ai.html";
+    return "products.html";
+  };
+
+  grid.innerHTML = products.map(p => `
+    <div class="card hover">
+      <div class="product-card">
+        <div class="product-logo">${p.logoText}</div>
+        <div>
+          <div class="row" style="align-items:flex-start">
+            <strong style="font-size:18px">${p.name}</strong>
+            <span class="tag">Subscription</span>
+          </div>
+          <p class="p">${p.tagline}</p>
+
+          <div class="priceRow">
+            <div class="priceTag">${formatLKR(p.priceLkr)}</div>
+            <span class="small">per month</span>
+          </div>
+
+          <div class="actions">
+            <a class="btn" href="${detailPage(p.id)}">Details</a>
+            <button class="btn primary" type="button" onclick="cart.addToCart('${p.id}', 1)">Add to Cart</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `).join("");
+
+</script>
+</body>
+</html>

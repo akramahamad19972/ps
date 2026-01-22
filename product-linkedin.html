@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>LinkedIn Premium — PrimeSoft</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<header class="nav">
+  <div class="container nav-inner">
+    <a class="brand" href="index.html"><span class="logo"></span><span>PrimeSoft</span></a>
+    <nav class="nav-links">
+      <a href="products.html">Products</a>
+      <a href="pricing.html">Pricing</a>
+      <a href="how-it-works.html">How it Works</a>
+      <a href="faq.html">FAQ</a>
+      <a class="btn ghost" href="contact.html">Support</a>
+      <a class="btn primary" href="pricing.html">Get Started</a>
+      <button class="btn" onclick="toggleTheme()" type="button">🌓</button>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <section class="section">
+    <div class="badge">✅ Professional tools • ⚡ Fast activation • 💬 Support</div>
+    <h1 class="h1">LinkedIn Premium</h1>
+    <p class="p-lg">Premium features for job seekers and professionals. Pick your billing, then checkout.</p>
+
+    <div class="grid" style="grid-template-columns:1fr 1fr;gap:18px;margin-top:18px">
+      <div class="card">
+        <h2 class="h2">Highlights</h2>
+        <ul class="ul">
+          <li class="li">Premium insights and features (plan dependent)</li>
+          <li class="li">Activation guidance</li>
+          <li class="li">Support & refund policy clarity</li>
+        </ul>
+      </div>
+
+      <div class="card">
+        <h2 class="h2">Select billing</h2>
+        <div class="pricing-toggle" style="margin-bottom:12px">
+          <div class="pill active" data-pill="monthly" onclick="setPricingMode('monthly')">Monthly</div>
+          <div class="pill" data-pill="yearly" onclick="setPricingMode('yearly')">Yearly</div>
+        </div>
+
+        <div class="card" style="box-shadow:none">
+          <div class="row"><strong>LinkedIn Premium</strong><span class="tag">Pro</span></div>
+          <div class="price"><span data-price data-monthly="15" data-yearly="139">$15</span> <span class="small" data-price-suffix>/month</span></div>
+          <p class="p">Adjust pricing to your offer and region.</p>
+          <div class="section-sm">
+            <a class="btn primary" data-checkout-link data-checkout-monthly="checkout.html?product=linkedin&bill=monthly" data-checkout-yearly="checkout.html?product=linkedin&bill=yearly" href="checkout.html">Continue to checkout</a>
+            <a class="btn" href="how-it-works.html">How it works</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container grid footer-grid">
+    <div>
+      <div class="row" style="justify-content:flex-start;gap:10px"><span class="logo"></span><strong>PrimeSoft</strong></div>
+      <p class="help" style="margin-top:10px">© <span id="y"></span> PrimeSoft.</p>
+    </div>
+    <div class="grid" style="grid-template-columns:repeat(2,1fr);gap:12px">
+      <div class="grid">
+        <a href="products.html">Products</a>
+        <a href="pricing.html">Pricing</a>
+        <a href="faq.html">FAQ</a>
+      </div>
+      <div class="grid">
+        <a href="contact.html">Support</a>
+        <a href="index.html">Home</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+<script>document.getElementById("y").textContent=new Date().getFullYear();</script>
+</body>
+</html>
