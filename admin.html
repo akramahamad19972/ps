@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Admin Dashboard — PrimeSoft</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .tabs { display:flex; gap:10px; flex-wrap:wrap; margin-top:14px; }
+    .tabBtn { padding:10px 14px; border-radius:14px; border:1px solid var(--line);
+      background: rgba(255,255,255,.04); color: var(--text); font-weight:900; cursor:pointer; }
+    .tabBtn.active { background: rgba(30,64,175,.18); border-color: rgba(30,64,175,.45); }
+    .panel { display:none; margin-top:16px; }
+    .panel.active { display:block; }
+
+    .twoCol { display:grid; grid-template-columns:1fr .9fr; gap:16px; }
+    @media (max-width: 900px){ .twoCol{grid-template-columns:1fr;} }
+
+    .tableWrap { overflow:auto; border-radius:18px; border:1px solid var(--line); }
+    table { width:100%; border-collapse:collapse; min-width:820px; }
+    th, td { padding:12px 14px; border-bottom:1px solid var(--line); text-align:left; }
+    th { background: rgba(30,64,175,.10); color: var(--text); font-weight:1000; position:sticky; top:0; }
+    td { color: var(--muted); font-weight:700; }
+    td strong { color: var(--text); }
+
+    .mono { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
+    .pill { display:inline-flex; align-items:center; gap:8px; padding:6px 10px; border-radius:999px;
+      border:1px solid var(--line); background: rgba(255,255,255,.04); color: var(--text); font-weight:900; font-size:12px; }
+
+    .danger { border-color: rgba(239,68,68,.5) !important; background: rgba(239,68,68,.10) !important; }
+    .ok { border-color: rgba(34,197,94,.45) !important; background: rgba(34,197,94,.10) !important; }
+
+    .formRow { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    @media (max-width: 900px){ .formRow{grid-template-columns:1fr;} }
+
+    .hint { font-size:12px; color: var(--muted); font-weight:700; }
+  </style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="container nav-inner">
+    <a class="brand" href="index.html"><span class="logo"></span><span>PrimeSoft</span></a>
+    <nav class="nav-links">
+      <a href="products.html">Products</a>
+      <a href="cart.html">Cart</a>
+      <a href="how-it-works.html">How it Works</a>
+      <a href="faq.html">FAQ</a>
+      <a class="btn ghost" href="contact.html">Support</a>
+      <button class="btn" onclick="toggleTheme()" type="button" aria-label="Toggle theme">🌓</button>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <section class="section">
+    <div class="kicker">Admin</div>
+    <h1 class="h1">Dashboard</h1>
+    <p class="p-lg">Manage products & view saved orders (localStorage). For real multi-user admin, you’ll need a backend.</p>
+
+    <div class="notice" style="margin-top:14px">
+      <div class="row" style="justify-content:flex-start;gap:10px;flex-wrap:wrap">
+        <span class="pill">🔐 Password gate: <strong id="gateStatus">OFF</strong></span>
+        <span class="pill">📦 Products: <strong id="prodCount">0</strong></span>
+        <span class="pill">🧾 Orders: <strong id="orderCount">0</strong></span>
+      </div>
+      <div class="hint" style="margin-top:8px">
+        Tip: Use this on your own device. GitHub Pages is public—don’t store sensitive info.
+      </div>
+    </div>
+
+    <div class="tabs">
+      <button class="tabBtn active" data-tab="products">Products</button>
+      <button class="tabBtn" data-tab="orders">Orders</button>
+      <button class="tabBtn" data-tab="backup">Backup</button>
+      <button class="tabBtn" data-tab="security">Security</button>
+    </div>
+
+    <!-- PRODUCTS PANEL -->
+    <div class="panel active" id="tab-products">
+      <div class="twoCol">
+        <div class="card">
+          <h2 class="h2">Product list</h2>
+          <div class="tableWrap" style="margin-top:12px">
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Tagline</th>
+                  <th>Price (LKR)</th>
+                  <th>Logo</th>
+                  <th style="width:210px">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="productTbody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2 class="h2" id="formTitle">Add product</h2>
+
+          <div class="form" style="margin-top:12px">
+            <div class="formRow">
+              <div>
+                <div class="small">Product ID (unique)</div>
+                <input class="input mono" id="p_id" placeholder="stealthwriter" />
+                <div class="hint">Use lowercase, no spaces. Example: stealthwriter</div>
+              </div>
+              <div>
+                <div class="small">Logo text</div>
+                <input class="input" id="p_logo" placeholder="SW" maxlength="4" />
+                <div class="hint">Small label shown in cart/product cards</div>
+              </div>
+            </div>
+
+            <div class="formRow">
+              <div>
+                <div class="small">Name</div>
+                <input class="input" id="p_name" placeholder="StealthWriter" />
+              </div>
+              <div>
+                <div class="small">Price (LKR per month)</div>
+                <input class="input" id="p_price" type="number" min="0" placeholder="5200" />
+              </div>
+            </div>
+
+            <div>
+              <div class="small">Tagline</div>
+              <input class="input" id="p_tagline" placeholder="AI writing & rewriting • Human-like output" />
+            </div>
+
+            <div class="row" style="justify-content:flex-start; margin-top:10px; gap:10px; flex-wrap:wrap">
+              <button class="btn primary" type="button" onclick="saveProduct()">Save</button>
+              <button class="btn" type="button" onclick="resetForm()">Clear</button>
+              <button class="btn danger" type="button" onclick="resetToDefaults()">Reset to defaults</button>
+            </div>
+
+            <div class="hint" style="margin-top:10px">
+              Products here override the default list in <span class="mono">app.js</span> using localStorage.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ORDERS PANEL -->
+    <div class="panel" id="tab-orders">
+      <div class="card">
+        <div class="row">
+          <div>
+            <h2 class="h2">Orders</h2>
+            <p class="p">Orders are saved locally when you checkout (we’ll add the small code snippet below).</p>
+          </div>
+          <div class="row" style="justify-content:flex-end; gap:10px; flex-wrap:wrap">
+            <button class="btn" type="button" onclick="seedDemoOrder()">Add demo order</button>
+            <button class="btn danger" type="button" onclick="clearOrders()">Clear orders</button>
+          </div>
+        </div>
+
+        <div class="tableWrap" style="margin-top:12px">
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Customer</th>
+                <th>Email</th>
+                <th>Items</th>
+                <th>Total</th>
+                <th style="width:220px">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="ordersTbody"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- BACKUP PANEL -->
+    <div class="panel" id="tab-backup">
+      <div class="twoCol">
+        <div class="card">
+          <h2 class="h2">Export</h2>
+          <p class="p">Download a JSON backup of products + orders.</p>
+          <div class="section-sm row" style="justify-content:flex-start;gap:10px;flex-wrap:wrap">
+            <button class="btn primary" type="button" onclick="downloadBackup()">Download backup.json</button>
+            <button class="btn" type="button" onclick="copyBackup()">Copy JSON</button>
+          </div>
+          <textarea class="textarea mono" id="backupText" style="margin-top:12px" placeholder="Backup JSON will appear here…"></textarea>
+        </div>
+
+        <div class="card">
+          <h2 class="h2">Import</h2>
+          <p class="p">Paste JSON backup to restore.</p>
+          <textarea class="textarea mono" id="importText" placeholder="Paste backup JSON here…"></textarea>
+          <div class="section-sm row" style="justify-content:flex-start;gap:10px;flex-wrap:wrap">
+            <button class="btn primary" type="button" onclick="importBackup()">Import</button>
+            <button class="btn" type="button" onclick="document.getElementById('importText').value=''">Clear</button>
+          </div>
+          <div class="notice" style="margin-top:10px">
+            Import replaces current admin products + orders.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SECURITY PANEL -->
+    <div class="panel" id="tab-security">
+      <div class="twoCol">
+        <div class="card">
+          <h2 class="h2">Password gate (simple)</h2>
+          <p class="p">This is NOT real security (GitHub Pages is public). It only hides the page on your device.</p>
+          <div class="form" style="margin-top:12px">
+            <div class="small">Set admin password</div>
+            <input class="input" id="pw" type="password" placeholder="Choose a password" />
+            <div class="row" style="justify-content:flex-start; gap:10px; margin-top:10px; flex-wrap:wrap">
+              <button class="btn primary" type="button" onclick="setPassword()">Enable</button>
+              <button class="btn danger" type="button" onclick="disablePassword()">Disable</button>
+            </div>
+            <div class="hint" style="margin-top:10px">
+              If enabled, you’ll be asked for password on opening admin.html.
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2 class="h2">Notes</h2>
+          <ul class="ul">
+            <li class="li">For real admin: use a backend (Firebase/Supabase) + auth.</li>
+            <li class="li">Don’t store private customer data in localStorage.</li>
+            <li class="li">This dashboard is best for personal management on your device.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="container grid footer-grid">
+    <div>
+      <div class="row" style="justify-content:flex-start;gap:10px"><span class="logo"></span><strong>PrimeSoft</strong></div>
+      <p class="help" style="margin-top:10px">© <span id="y"></span> PrimeSoft.</p>
+    </div>
+    <div class="grid" style="grid-template-columns:repeat(2,1fr);gap:12px">
+      <div class="grid">
+        <a href="products.html">Products</a>
+        <a href="how-it-works.html">How it Works</a>
+        <a href="faq.html">FAQ</a>
+      </div>
+      <div class="grid">
+        <a href="contact.html">Support</a>
+        <a href="index.html">Home</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script src="app.js"></script>
+<script>
+  document.getElementById("y").textContent = new Date().getFullYear();
+
+  // ---- Storage keys ----
+  const PROD_KEY = "products_v1";  // admin override list
+  const ORDERS_KEY = "orders_v1";
+  const PW_KEY = "admin_pw_v1";
+
+  // ---- Password gate (soft gate) ----
+  function gateCheck() {
+    const pw = localStorage.getItem(PW_KEY);
+    const gateStatus = document.getElementById("gateStatus");
+    gateStatus.textContent = pw ? "ON" : "OFF";
+    if (!pw) return true;
+
+    const entered = prompt("Admin password:");
+    if (entered === pw) return true;
+    alert("Wrong password.");
+    location.href = "index.html";
+    return false;
+  }
+
+  // ---- Products (override) ----
+  function getDefaultProducts() {
+    // fallback to the default list in app.js
+    return (window.getAllProducts ? window.getAllProducts() : []) || [];
+  }
+
+  function readProducts() {
+    try {
+      const raw = localStorage.getItem(PROD_KEY);
+      if (!raw) return getDefaultProducts();
+      const parsed = JSON.parse(raw);
+      return Array.isArray(parsed) ? parsed : getDefaultProducts();
+    } catch {
+      return getDefaultProducts();
+    }
+  }
+
+  function writeProducts(list) {
+    localStorage.setItem(PROD_KEY, JSON.stringify(list));
+    refreshAll();
+  }
+
+  // ---- Orders ----
+  function readOrders() {
+    try { return JSON.parse(localStorage.getItem(ORDERS_KEY)) || []; }
+    catch { return []; }
+  }
+  function writeOrders(list) {
+    localStorage.setItem(ORDERS_KEY, JSON.stringify(list));
+    refreshAll();
+  }
+
+  // ---- UI helpers ----
+  let editingId = null;
+
+  function resetForm() {
+    editingId = null;
+    document.getElementById("formTitle").textContent = "Add product";
+    ["p_id","p_logo","p_name","p_price","p_tagline"].forEach(id => document.getElementById(id).value = "");
+  }
+
+  function fillForm(p) {
+    editingId = p.id;
+    document.getElementById("formTitle").textContent = "Edit product";
+    document.getElementById("p_id").value = p.id;
+    document.getElementById("p_logo").value = p.logoText || "";
+    document.getElementById("p_name").value = p.name || "";
+    document.getElementById("p_price").value = p.priceLkr || 0;
+    document.getElementById("p_tagline").value = p.tagline || "";
+  }
+
+  function saveProduct() {
+    const id = document.getElementById("p_id").value.trim().toLowerCase();
+    const logoText = document.getElementById("p_logo").value.trim() || "•";
+    const name = document.getElementById("p_name").value.trim();
+    const priceLkr = Number(document.getElementById("p_price").value || 0);
+    const tagline = document.getElementById("p_tagline").value.trim();
+
+    if (!id || !name) {
+      alert("Please fill Product ID and Name.");
+      return;
+    }
+
+    const list = readProducts();
+    const idx = list.findIndex(x => x.id === id);
+
+    const item = { id, name, tagline, priceLkr, logoText };
+
+    if (editingId && editingId !== id) {
+      // if changing ID, remove old
+      const oldIdx = list.findIndex(x => x.id === editingId);
+      if (oldIdx >= 0) list.splice(oldIdx, 1);
+    }
+
+    if (idx >= 0) list[idx] = item;
+    else list.push(item);
+
+    writeProducts(list);
+    resetForm();
+    alert("Saved ✅");
+  }
+
+  function deleteProduct(id) {
+    if (!confirm("Delete product: " + id + " ?")) return;
+    const list = readProducts().filter(x => x.id !== id);
+    writeProducts(list);
+  }
+
+  function resetToDefaults() {
+    if (!confirm("Reset products to defaults from app.js?")) return;
+    localStorage.removeItem(PROD_KEY);
+    refreshAll();
+  }
+
+  // ---- Orders actions ----
+  function viewOrder(id) {
+    const o = readOrders().find(x => x.id === id);
+    if (!o) return;
+    alert(
+      `Order #${o.id}\n\n` +
+      `Date: ${new Date(o.createdAt).toLocaleString()}\n` +
+      `Name: ${o.customerName}\n` +
+      `Email: ${o.customerEmail}\n` +
+      `Total: ${o.totalLkr}\n\n` +
+      `Items:\n` +
+      o.items.map(i => `- ${i.name} x${i.qty} (${i.lineTotalLkr})`).join("\n")
+    );
+  }
+
+  function deleteOrder(id) {
+    if (!confirm("Delete order: " + id + " ?")) return;
+    writeOrders(readOrders().filter(x => x.id !== id));
+  }
+
+  function clearOrders() {
+    if (!confirm("Clear all orders?")) return;
+    localStorage.removeItem(ORDERS_KEY);
+    refreshAll();
+  }
+
+  function seedDemoOrder() {
+    const now = Date.now();
+    const demo = {
+      id: "D" + String(now).slice(-7),
+      createdAt: now,
+      customerName: "Demo Customer",
+      customerEmail: "demo@email.com",
+      items: [{ id: "netflix", name: "Netflix", qty: 1, lineTotalLkr: 2500 }],
+      totalLkr: 2500
+    };
+    const list = [demo, ...readOrders()];
+    writeOrders(list);
+  }
+
+  // ---- Render tables ----
+  function renderProductsTable() {
+    const list = readProducts();
+    document.getElementById("prodCount").textContent = String(list.length);
+
+    const tb = document.getElementById("productTbody");
+    tb.innerHTML = list.map(p => `
+      <tr>
+        <td class="mono"><strong>${p.id}</strong></td>
+        <td><strong>${p.name || ""}</strong></td>
+        <td>${p.tagline || ""}</td>
+        <td class="mono">${p.priceLkr ?? 0}</td>
+        <td class="mono">${p.logoText || ""}</td>
+        <td>
+          <div class="row" style="justify-content:flex-start;gap:10px;flex-wrap:wrap">
+            <button class="btn" type="button" onclick='fillForm(${JSON.stringify(p)})'>Edit</button>
+            <button class="btn danger" type="button" onclick="deleteProduct('${p.id}')">Delete</button>
+          </div>
+        </td>
+      </tr>
+    `).join("");
+  }
+
+  function renderOrdersTable() {
+    const orders = readOrders();
+    document.getElementById("orderCount").textContent = String(orders.length);
+
+    const tb = document.getElementById("ordersTbody");
+    if (!orders.length) {
+      tb.innerHTML = `<tr><td colspan="6">No orders saved yet.</td></tr>`;
+      return;
+    }
+
+    tb.innerHTML = orders.map(o => `
+      <tr>
+        <td class="mono">${new Date(o.createdAt).toLocaleString()}</td>
+        <td><strong>${o.customerName || "-"}</strong></td>
+        <td>${o.customerEmail || "-"}</td>
+        <td>${(o.items || []).map(i => `<span class="pill">${i.name} x${i.qty}</span>`).join(" ")}</td>
+        <td class="mono"><strong>${o.totalLkr ?? 0}</strong></td>
+        <td>
+          <div class="row" style="justify-content:flex-start;gap:10px;flex-wrap:wrap">
+            <button class="btn" type="button" onclick="viewOrder('${o.id}')">View</button>
+            <button class="btn danger" type="button" onclick="deleteOrder('${o.id}')">Delete</button>
+          </div>
+        </td>
+      </tr>
+    `).join("");
+  }
+
+  // ---- Backup ----
+  function getBackupObject() {
+    const obj = {
+      exportedAt: new Date().toISOString(),
+      products: (localStorage.getItem(PROD_KEY) ? readProducts() : null), // null means using defaults
+      orders: readOrders()
+    };
+    return obj;
+  }
+
+  function refreshBackupText() {
+    document.getElementById("backupText").value = JSON.stringify(getBackupObject(), null, 2);
+  }
+
+  function downloadBackup() {
+    refreshBackupText();
+    const blob = new Blob([document.getElementById("backupText").value], { type: "application/json" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "backup.json";
+    a.click();
+    URL.revokeObjectURL(a.href);
+  }
+
+  async function copyBackup() {
+    refreshBackupText();
+    await navigator.clipboard.writeText(document.getElementById("backupText").value);
+    alert("Copied ✅");
+  }
+
+  function importBackup() {
+    const raw = document.getElementById("importText").value.trim();
+    if (!raw) return alert("Paste JSON first.");
+    try {
+      const obj = JSON.parse(raw);
+      if (obj.products === null) localStorage.removeItem(PROD_KEY);
+      else if (Array.isArray(obj.products)) localStorage.setItem(PROD_KEY, JSON.stringify(obj.products));
+      if (Array.isArray(obj.orders)) localStorage.setItem(ORDERS_KEY, JSON.stringify(obj.orders));
+      alert("Imported ✅");
+      refreshAll();
+    } catch {
+      alert("Invalid JSON.");
+    }
+  }
+
+  // ---- Security ----
+  function setPassword() {
+    const pw = document.getElementById("pw").value.trim();
+    if (!pw) return alert("Enter a password.");
+    localStorage.setItem(PW_KEY, pw);
+    alert("Enabled ✅");
+    refreshAll();
+  }
+
+  function disablePassword() {
+    localStorage.removeItem(PW_KEY);
+    alert("Disabled ✅");
+    refreshAll();
+  }
+
+  // ---- Tabs ----
+  document.querySelectorAll(".tabBtn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".tabBtn").forEach(b => b.classList.remove("active"));
+      document.querySelectorAll(".panel").forEach(p => p.classList.remove("active"));
+      btn.classList.add("active");
+      document.getElementById("tab-" + btn.dataset.tab).classList.add("active");
+    });
+  });
+
+  function refreshAll() {
+    document.getElementById("gateStatus").textContent = localStorage.getItem(PW_KEY) ? "ON" : "OFF";
+    renderProductsTable();
+    renderOrdersTable();
+    refreshBackupText();
+  }
+
+  // Start
+  if (gateCheck()) refreshAll();
+</script>
+</body>
+</html>
