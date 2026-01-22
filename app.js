@@ -52,6 +52,13 @@
       logoText: "AI"
     }
   ];
+{
+  id: "stealthwriter",
+  name: "StealthWriter",
+  tagline: "AI writing & rewriting • Human-like output",
+  priceLkr: 5200,
+  logoText: "SW"
+}
 
   function getProduct(id) {
     return PRODUCTS.find(p => p.id === id);
